@@ -1,0 +1,6 @@
+{
+  "name": "Artdrobotix Institute — Digital Campus & Management System",
+  "description": "Full-stack institutional management and learning platform for Artdrobotix Institute: School of Art, Science & Technology.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
