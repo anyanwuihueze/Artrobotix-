@@ -841,6 +841,60 @@ export default function PublicWebsite({
             </div>
           </div>
         </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="border-t border-neutral-200 mt-16 pt-12">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+              <div className="lg:col-span-4">
+                <div className="aspect-square border border-neutral-200 overflow-hidden bg-neutral-100">
+                  <img
+                    src="/assets/oghenekome_okah.png"
+                    alt="Oghenekome Omohefe Okah"
+                    className="w-full h-full object-cover object-top"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+              <div className="lg:col-span-8 space-y-5">
+                <div>
+                  <p className="text-xs font-semibold text-[#F9501E] mb-1">
+                    EXECUTIVE &amp; CREATIVE LEADERSHIP
+                  </p>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-[#111111]">
+                    Oghenekome Omohefe Okah
+                  </h2>
+                  <p className="text-sm font-medium text-neutral-600 mt-1">
+                    Chief Executive Officer, ARTDROBOTIX | Creative Director, ARTDROBOTIX Institute
+                  </p>
+                </div>
+                <div className="text-neutral-700 leading-relaxed space-y-4 max-w-2xl">
+                  <p>
+                    Oghenekome Omohefe Okah is a Nigerian robotics innovator, professional drone pilot, and the Chief Executive Officer of ARTDROBOTIX. He also serves as Creative Director at the ARTDROBOTIX Institute, where he trains young engineers, pilots, and creators for careers in robotics and technology.
+                  </p>
+                  <p>
+                    With over 7,500 logged flight hours, Okah is among the most experienced commercial drone pilots in Africa. His expertise spans aerial surveillance, security operations, mapping, inspection, and cinematic production for major events and productions.
+                  </p>
+                  <p>
+                    He is the inventor of Oke 8 and Ena 1, two Nigerian-built security robots designed to combat insecurity through autonomous patrol, real-time surveillance, threat detection, and rapid response.
+                  </p>
+                  <p>
+                    Through ARTDROBOTIX, Okah is building safer communities, developing local talent, and proving that world-class robotics innovation can be designed, built, and deployed from Nigeria to the world. His work bridges creativity, engineering, and national security, inspiring a new generation of African innovators daily to build boldly.
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-4 pt-2 text-sm">
+                  <div className="border border-neutral-200 p-3.5">
+                    <div className="font-semibold text-[#111111]">7,500+ Flight Hours</div>
+                    <div className="text-xs text-neutral-500 mt-0.5">Commercial drone operations</div>
+                  </div>
+                  <div className="border border-neutral-200 p-3.5">
+                    <div className="font-semibold text-[#111111]">Oke 8 &amp; Ena 1</div>
+                    <div className="text-xs text-neutral-500 mt-0.5">Nigerian-built security robots</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Student Application & Status Tracker */}
