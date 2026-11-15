@@ -850,7 +850,7 @@ export default function PublicWebsite({
                   <img
                     src="/assets/oghenekome_okah.png"
                     alt="Oghenekome Omohefe Okah"
-                    className="w-full h-full object-cover object-top"
+                    className="w-full h-full object-contain"
                     loading="lazy"
                   />
                 </div>
