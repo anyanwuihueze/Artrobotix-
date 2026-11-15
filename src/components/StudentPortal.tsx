@@ -40,6 +40,7 @@ import {
   downloadOfficialReceiptPdf,
   downloadProformaInvoicePdf,
 } from '../lib/pdfGenerator';
+import BrandEmblem from './BrandEmblem';
 
 type StudentTab =
   | 'dashboard'
@@ -313,15 +314,10 @@ export default function StudentPortal({
           <button
             type="button"
             onClick={onBackToPublic}
-            className="flex items-center gap-3 text-left"
+            className="group flex items-center gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F9501E]/60 rounded-sm"
           >
-            <img
-              src="/assets/artdrobotix_seal.jpg"
-              alt="Artdrobotix"
-              className="w-10 h-10 object-contain bg-white rounded-full shrink-0"
-              referrerPolicy="no-referrer"
-            />
-            <span className="font-display font-bold text-sm tracking-tight whitespace-nowrap">
+            <BrandEmblem size="sm" tone="dark" alt="Artdrobotix" />
+            <span className="font-display font-bold text-sm tracking-tight whitespace-nowrap group-hover:text-white transition-colors">
               STUDENT PORTAL
             </span>
           </button>

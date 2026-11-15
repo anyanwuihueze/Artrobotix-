@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { CheckCircle2, Search, ShieldAlert, ArrowLeft } from 'lucide-react';
+import BrandEmblem from './BrandEmblem';
 
 interface VerificationResult {
   valid: boolean;
@@ -57,13 +58,8 @@ export default function CertificateVerify({
         )}
 
         <div className="bg-white border border-neutral-200 border-t-[3px] border-t-[#F9501E] p-6 sm:p-10">
-          <div className="flex items-center gap-4 pb-6 border-b border-neutral-200">
-            <img
-              src="/assets/artdrobotix_seal.jpg"
-              alt="Artdrobotix Institute Seal"
-              className="w-14 h-14 rounded-full object-contain ring-1 ring-neutral-200 shrink-0"
-              referrerPolicy="no-referrer"
-            />
+          <div className="group flex items-center gap-4 pb-6 border-b border-neutral-200">
+            <BrandEmblem size="card" tone="light" alt="Artdrobotix Institute Seal" />
             <div>
               <h1 className="font-display text-xl sm:text-2xl font-extrabold tracking-tight text-[#111111]">
                 Official Certificate Verification

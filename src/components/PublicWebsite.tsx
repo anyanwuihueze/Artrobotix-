@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { InstituteSettings, Programme, Cohort, AppUser } from '../types';
 import ApplicationForm from './ApplicationForm';
+import BrandEmblem from './BrandEmblem';
 import heroTechStudioImg from '../assets/images/hero_tech_studio_1794601462603.jpg';
 import bootcampDevicesImg from '../assets/images/bootcamp_devices_1794601463545.jpg';
 
@@ -100,16 +101,14 @@ export default function PublicWebsite({
           {/* Zone 1: Brand Wordmark */}
           <a
             href="#home"
-            className="flex items-center gap-3.5 text-[#111111] whitespace-nowrap shrink-0"
+            className="group flex items-center gap-3.5 text-[#111111] whitespace-nowrap shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F9501E]/40 rounded-sm"
           >
-            <img
-              src="/assets/artdrobotix_seal.jpg"
-              alt="Artdrobotix Institute Seal"
-              className="w-11 h-11 sm:w-12 sm:h-12 lg:w-14 lg:h-14 rounded-full object-contain shrink-0 ring-1 ring-neutral-200"
-              referrerPolicy="no-referrer"
-            />
-            <span className="font-display text-lg sm:text-xl lg:text-[22px] font-extrabold tracking-[-0.02em] text-[#111111] whitespace-nowrap">
-              ARTDROBOTIX <span className="text-[#F9501E]">INSTITUTE</span>
+            <BrandEmblem size="lg" tone="light" alt="Artdrobotix Institute Seal" />
+            <span className="font-display text-lg sm:text-xl lg:text-[22px] font-extrabold tracking-[-0.02em] text-[#111111] whitespace-nowrap transition-colors duration-200">
+              ARTDROBOTIX{' '}
+              <span className="text-[#F9501E] transition-colors duration-200 group-hover:text-[#d94316]">
+                INSTITUTE
+              </span>
             </span>
           </a>
 

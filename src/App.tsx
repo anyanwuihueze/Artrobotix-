@@ -4,6 +4,7 @@ import PublicWebsite from './components/PublicWebsite';
 import CertificateVerify from './components/CertificateVerify';
 import StudentPortal from './components/StudentPortal';
 import AdminDashboard from './components/AdminDashboard';
+import BrandEmblem from './components/BrandEmblem';
 import { Cohort, InstituteSettings, Programme } from './types';
 
 type AppView = 'public' | 'verify' | 'portal' | 'signin';
@@ -69,13 +70,8 @@ function CampusShell() {
     return (
       <div className="min-h-screen bg-[#F9F8F6] flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-white border border-neutral-200 border-t-[3px] border-t-[#F9501E] p-8 space-y-6">
-          <div className="flex items-center gap-3.5">
-            <img
-              src="/assets/artdrobotix_seal.jpg"
-              alt="Artdrobotix Institute Seal"
-              className="w-14 h-14 rounded-full object-contain ring-1 ring-neutral-200 shrink-0"
-              referrerPolicy="no-referrer"
-            />
+          <div className="group flex items-center gap-3.5">
+            <BrandEmblem size="card" tone="light" alt="Artdrobotix Institute Seal" />
             <div>
               <h1 className="font-display text-lg font-extrabold tracking-tight text-[#111111]">
                 Digital Campus Sign In

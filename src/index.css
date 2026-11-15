@@ -26,6 +26,34 @@
   font-variant-numeric: tabular-nums;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes artdrobotix-orbit-cw {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes artdrobotix-orbit-ccw {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-orbit-cw {
+    animation: artdrobotix-orbit-cw 11s linear infinite;
+  }
+
+  .animate-orbit-ccw {
+    animation: artdrobotix-orbit-ccw 14s linear infinite;
+  }
+}
+
 @media print {
   .no-print {
     display: none !important;

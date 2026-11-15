@@ -45,6 +45,7 @@ import AdminAdmissionsTab from './admin/AdminAdmissionsTab';
 import AdminFinanceTab from './admin/AdminFinanceTab';
 import AdminAcademicsTab from './admin/AdminAcademicsTab';
 import AdminReportsSettingsTab from './admin/AdminReportsSettingsTab';
+import BrandEmblem from './BrandEmblem';
 
 type AdminTab =
   | 'overview'
@@ -337,15 +338,10 @@ export default function AdminDashboard({
           <button
             type="button"
             onClick={onBackToPublic}
-            className="flex items-center gap-3 text-left"
+            className="group flex items-center gap-3 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F9501E]/60 rounded-sm"
           >
-            <img
-              src="/assets/artdrobotix_seal.jpg"
-              alt="Artdrobotix"
-              className="w-10 h-10 object-contain bg-white rounded-full shrink-0"
-              referrerPolicy="no-referrer"
-            />
-            <span className="font-display font-bold text-xs tracking-wider whitespace-nowrap">
+            <BrandEmblem size="sm" tone="dark" alt="Artdrobotix" />
+            <span className="font-display font-bold text-xs tracking-wider whitespace-nowrap group-hover:text-white transition-colors">
               ARTDROBOTIX ADMIN
             </span>
           </button>
