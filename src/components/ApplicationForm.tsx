@@ -286,7 +286,10 @@ interface ApplicationDraftForm {
     setSubmitting(true);
     setError(null);
     try {
+      const abortCtl = new AbortController();
+      setTimeout(() => abortCtl.abort(), 25000);
       const res = await fetch(apiUrl('/api/public/applications'), {
+        signal: abortCtl.signal,
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

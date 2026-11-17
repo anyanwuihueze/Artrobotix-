@@ -11,8 +11,34 @@ import {
 import { rateLimit } from '../middleware/auth.ts';
 import { ensureInitialSeed } from '../seed.ts';
 import { generateReference } from '../services/references.ts';
-import { dispatchNotification } from '../services/notifications.ts';
-import { logAudit } from '../services/audit.ts';
+import { dispatchNotification as dispatchNotificationRaw } from '../services/notifications.ts';
+import { logAudit as logAuditRaw } from '../services/audit.ts';
+
+const BG_TIMEOUT_MS = 8000;
+async function bounded<T>(label: string, p: Promise<T>): Promise<T | undefined> {
+  let t: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      p,
+      new Promise<undefined>((resolve) => {
+        t = setTimeout(() => {
+          console.error(`[bounded] ${label} timed out after ${BG_TIMEOUT_MS}ms`);
+          resolve(undefined);
+        }, BG_TIMEOUT_MS);
+      }),
+    ]);
+  } catch (e) {
+    console.error(`[bounded] ${label} failed:`, e);
+    return undefined;
+  } finally {
+    if (t) clearTimeout(t);
+  }
+}
+const dispatchNotification = (a: Parameters<typeof dispatchNotificationRaw>[0]) =>
+  bounded('dispatchNotification', dispatchNotificationRaw(a));
+const logAudit = (a: Parameters<typeof logAuditRaw>[0]) =>
+  bounded('logAudit', logAuditRaw(a));
+
 
 const router = Router();
 
