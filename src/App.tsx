@@ -15,6 +15,7 @@ function CampusShell() {
     dbUser,
     loading: authLoading,
     authError,
+    authDiagnostics,
     signInWithGoogle,
   } = useAuth();
 
@@ -91,6 +92,15 @@ function CampusShell() {
           {authError && (
             <div className="p-3 bg-red-50 border border-red-200 text-xs text-red-800">
               {authError}
+            </div>
+          )}
+
+          {authDiagnostics.length > 0 && (
+            <div className="p-3 bg-neutral-50 border border-neutral-200 text-xs text-neutral-700 space-y-1">
+              <p className="font-semibold">Sign-in diagnostic</p>
+              {authDiagnostics.map((entry, index) => (
+                <p key={index} className="break-words">{entry}</p>
+              ))}
             </div>
           )}
 
