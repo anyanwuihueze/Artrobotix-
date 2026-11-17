@@ -5,7 +5,7 @@ mkdirSync('build', { recursive: true });
 
 await build({
   entryPoints: ['server.ts'],
-  outfile: 'build/server.mjs',
+  outfile: 'api/index.mjs',
   bundle: true,
   platform: 'node',
   format: 'esm',
