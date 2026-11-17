@@ -23,6 +23,7 @@ interface Props {
     submittedDate: string;
   }) => void;
   onBackToSite?: () => void;
+  onContinueToPortal?: () => void;
 }
 
 const EXPERIENCE_OPTIONS = [
@@ -64,6 +65,7 @@ export default function ApplicationForm({
   initialProgrammeId,
   onSubmitted,
   onBackToSite,
+  onContinueToPortal,
 }: Props) {
   const defaultProg =
     programmes.find((p) => p.id === initialProgrammeId) || programmes[0];
@@ -372,6 +374,15 @@ interface ApplicationDraftForm {
         </p>
 
         <div className="flex flex-wrap gap-3">
+        {onContinueToPortal && (
+          <button
+            type="button"
+            onClick={onContinueToPortal}
+            className="px-5 py-2.5 bg-[#F9501E] text-white text-sm font-semibold hover:bg-orange-600 transition-colors"
+          >
+            Continue to Digital Campus
+          </button>
+        )}
           {onBackToSite && (
             <button
               type="button"

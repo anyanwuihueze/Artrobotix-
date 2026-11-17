@@ -29,6 +29,17 @@ export interface AuthRequest extends Request {
 
 const OWNER_EMAIL = 'anyanwuihueze@gmail.com';
 
+async function linkStudentRecords(userId: number, email: string) {
+  await Promise.all([
+    db.update(studentProfiles)
+      .set({ userId })
+      .where(eq(studentProfiles.email, email)),
+    db.update(applications)
+      .set({ userId })
+      .where(eq(applications.email, email)),
+  ]);
+}
+
 async function syncUserRecord(decoded: DecodedIdToken): Promise<DbUser> {
   const email = (decoded.email || `${decoded.uid}@artdrobotix.local`).toLowerCase();
   const fullName = decoded.name || email.split('@')[0];
@@ -44,6 +55,8 @@ async function syncUserRecord(decoded: DecodedIdToken): Promise<DbUser> {
     if (!record.isActive) {
       throw new Error('ACCOUNT_DISABLED');
     }
+    await linkStudentRecords(record.id, email);
+
     return {
       ...record,
       role: record.role as UserRole,
@@ -73,6 +86,7 @@ async function syncUserRecord(decoded: DecodedIdToken): Promise<DbUser> {
       .returning();
 
     const row = updated[0];
+    await linkStudentRecords(row.id, email);
     return { ...row, role: row.role as UserRole };
   }
 
@@ -101,16 +115,7 @@ async function syncUserRecord(decoded: DecodedIdToken): Promise<DbUser> {
 
   const dbUser = inserted[0];
 
-  // Auto-link any matching student profile or application by email
-  await db
-    .update(studentProfiles)
-    .set({ userId: dbUser.id })
-    .where(eq(studentProfiles.email, email));
-
-  await db
-    .update(applications)
-    .set({ userId: dbUser.id })
-    .where(eq(applications.email, email));
+  await linkStudentRecords(dbUser.id, email);
 
   return {
     ...dbUser,

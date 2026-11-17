@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { and, eq, sql } from 'drizzle-orm';
+import { and, eq, sql, or } from 'drizzle-orm';
 import { db } from '../../db/index.ts';
 import { applications, notifications, studentProfiles } from '../../db/schema.ts';
 import { requireAuth } from '../middleware/auth.ts';
@@ -17,7 +17,12 @@ router.get('/me', requireAuth, async (req: AuthRequest, res) => {
       db
         .select()
         .from(studentProfiles)
-        .where(eq(studentProfiles.userId, user.id))
+        .where(
+          or(
+            eq(studentProfiles.userId, user.id),
+            eq(studentProfiles.email, user.email)
+          )
+        )
         .limit(1),
       db
         .select()

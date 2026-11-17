@@ -929,6 +929,7 @@ export default function PublicWebsite({
               settings={settings}
               initialProgrammeId={selectedProgrammeId}
               onBackToSite={() => setShowApplicationModal(false)}
+              onContinueToPortal={currentUser ? onOpenPortal : onSignIn}
             />
           )}
 
