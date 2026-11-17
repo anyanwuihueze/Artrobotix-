@@ -1,5 +1,5 @@
 import type { NextFunction, Request, Response } from 'express';
-import { eq, sql } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import type { DecodedIdToken } from 'firebase-admin/auth';
 import { adminAuth } from '../../lib/firebase-admin.ts';
 import { db } from '../../db/index.ts';
@@ -58,6 +58,10 @@ async function syncUserRecord(decoded: DecodedIdToken): Promise<DbUser> {
     .limit(1);
 
   if (byEmail.length > 0) {
+    if (!byEmail[0].isActive) {
+      throw new Error('ACCOUNT_DISABLED');
+    }
+
     const updated = await db
       .update(users)
       .set({
@@ -72,14 +76,10 @@ async function syncUserRecord(decoded: DecodedIdToken): Promise<DbUser> {
     return { ...row, role: row.role as UserRole };
   }
 
-  // Determine initial role: institute owner or very first user becomes SUPER_ADMIN
-  const countRes = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(users);
-  const totalUsers = countRes[0]?.count ?? 0;
-
+  // Only the verified institute owner receives initial SUPER_ADMIN privileges.
+  // Being the first registered user never grants administrator access.
   const initialRole: UserRole =
-    email === OWNER_EMAIL || totalUsers === 0 ? 'SUPER_ADMIN' : 'STUDENT';
+    email === OWNER_EMAIL ? 'SUPER_ADMIN' : 'STUDENT';
 
   const inserted = await db
     .insert(users)
@@ -124,23 +124,51 @@ export const requireAuth = async (
   next: NextFunction
 ) => {
   const authHeader = req.headers.authorization;
+
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Authentication required. Missing Bearer token.' });
+    return res.status(401).json({
+      error: 'Authentication required. Missing Bearer token.',
+    });
   }
 
-  const token = authHeader.split('Bearer ')[1];
+  const token = authHeader.slice(7);
+
+  let decodedToken: DecodedIdToken;
+
+  // Firebase token errors are authentication errors (401).
   try {
-    const decodedToken = await adminAuth.verifyIdToken(token);
-    req.user = decodedToken;
+    decodedToken = await adminAuth.verifyIdToken(token);
+  } catch (error: unknown) {
+    console.error('Firebase token verification failed:', error);
+    return res.status(401).json({
+      error: 'Invalid or expired authentication token.',
+    });
+  }
+
+  if (!decodedToken.email || decodedToken.email_verified !== true) {
+    return res.status(403).json({
+      error: 'A verified email address is required to access this application.',
+    });
+  }
+
+  req.user = decodedToken;
+
+  // Account/database errors must not be misreported as invalid tokens.
+  try {
     const dbUser = await syncUserRecord(decodedToken);
     req.dbUser = dbUser;
-    next();
+    return next();
   } catch (error: unknown) {
     if (error instanceof Error && error.message === 'ACCOUNT_DISABLED') {
-      return res.status(403).json({ error: 'This user account has been deactivated.' });
+      return res.status(403).json({
+        error: 'This user account has been deactivated.',
+      });
     }
-    console.error('Auth verification failed:', error);
-    return res.status(401).json({ error: 'Invalid or expired authentication token.' });
+
+    console.error('User record synchronization failed:', error);
+    return res.status(500).json({
+      error: 'Failed to synchronize user account.',
+    });
   }
 };
 

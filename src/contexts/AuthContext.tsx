@@ -13,6 +13,7 @@ import {
   User as FirebaseUser,
 } from 'firebase/auth';
 import { auth, googleAuthProvider } from '../lib/firebase';
+import { apiUrl } from '../lib/api';
 import { AppUser, StudentProfile } from '../types';
 
 interface AuthContextValue {
@@ -45,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const idToken = await user.getIdToken();
       tokenRef.current = idToken;
-      const res = await fetch('/api/auth/me', {
+      const res = await fetch(apiUrl('/api/auth/me'), {
         headers: { Authorization: `Bearer ${idToken}` },
       });
       if (!res.ok) {
@@ -64,6 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       );
       setDbUser(null);
       setStudentProfile(null);
+      throw err;
     }
   }, []);
 
@@ -71,7 +73,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const unsub = onAuthStateChanged(auth, async (user) => {
       setFirebaseUser(user);
       if (user) {
-        await fetchMe(user);
+        try {
+          await fetchMe(user);
+        } catch (err) {
+          console.error('Initial session verification failed:', err);
+        }
       } else {
         tokenRef.current = null;
         setDbUser(null);
@@ -128,7 +134,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         headers.set('Authorization', `Bearer ${token}`);
       }
 
-      const res = await fetch(url, { ...options, headers });
+      const res = await fetch(apiUrl(url), { ...options, headers });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
         const err = new Error(data.error || `Request failed (${res.status})`) as Error & {

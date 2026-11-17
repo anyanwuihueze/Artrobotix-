@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiUrl } from '../lib/api';
 import { CheckCircle2, Search, ShieldAlert, ArrowLeft } from 'lucide-react';
 import BrandEmblem from './BrandEmblem';
 
@@ -30,7 +31,7 @@ export default function CertificateVerify({
     setLoading(true);
     setResult(null);
     try {
-      const res = await fetch(`/api/public/verify/${encodeURIComponent(cleaned)}`);
+      const res = await fetch(apiUrl(`/api/public/verify/${encodeURIComponent(cleaned)}`));
       const data = await res.json();
       setResult(data);
     } catch {

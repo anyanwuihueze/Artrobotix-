@@ -1,8 +1,6 @@
 import 'dotenv/config';
 import crypto from 'crypto';
 import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { and, desc, eq } from 'drizzle-orm';
 import { db } from './src/db/index.ts';
 import {
@@ -20,12 +18,36 @@ import { dispatchNotification } from './src/server/services/notifications.ts';
 import { logAudit } from './src/server/services/audit.ts';
 import { recalculatePaymentPlanStatus } from './src/server/services/billing.ts';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const app = express();
+  // Restrict browser API access to explicitly trusted frontend origins.
+  const allowedOrigins = (
+    process.env.CORS_ORIGINS || 'https://artrobotix.vercel.app'
+  )
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
 
-async function startServer() {
-  const app = express();
-  const PORT = Number(process.env.PORT || 3000);
+  app.use((req, res, next) => {
+    const origin = req.headers.origin;
+
+    if (origin && !allowedOrigins.includes(origin)) {
+      return res.status(403).json({ error: 'Origin not allowed.' });
+    }
+
+    if (origin) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+      res.setHeader('Access-Control-Max-Age', '600');
+      res.vary('Origin');
+    }
+
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
+
+    next();
+  });
 
   // Paystack webhook endpoint needs raw body signature verification
   app.post(
@@ -202,24 +224,4 @@ async function startServer() {
   app.use('/api/student', studentRoutes);
   app.use('/api/admin', adminRoutes);
 
-  if (process.env.NODE_ENV !== 'production') {
-    const { createServer: createViteServer } = await import('vite');
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(__dirname, 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (_req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
-
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Artdrobotix Institute server running on http://0.0.0.0:${PORT}`);
-  });
-}
-
-startServer();
+export default app;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { apiUrl } from './lib/api';
 import PublicWebsite from './components/PublicWebsite';
 import CertificateVerify from './components/CertificateVerify';
 import StudentPortal from './components/StudentPortal';
@@ -28,7 +29,7 @@ function CampusShell() {
   useEffect(() => {
     const loadPublic = async () => {
       try {
-        const res = await fetch('/api/public/home');
+        const res = await fetch(apiUrl('/api/public/home'));
         if (res.ok) {
           const data = await res.json();
           setSettings(data.settings);

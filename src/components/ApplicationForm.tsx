@@ -9,6 +9,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { InstituteSettings, PaymentPlanChoice, Programme } from '../types';
+import { apiUrl } from '../lib/api';
 
 interface Props {
   programmes: Programme[];
@@ -285,7 +286,7 @@ interface ApplicationDraftForm {
     setSubmitting(true);
     setError(null);
     try {
-      const res = await fetch('/api/public/applications', {
+      const res = await fetch(apiUrl('/api/public/applications'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

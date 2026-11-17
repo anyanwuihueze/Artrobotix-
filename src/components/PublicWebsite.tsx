@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { apiUrl } from '../lib/api';
 import {
   ArrowRight,
   BookOpen,
@@ -75,9 +76,9 @@ export default function PublicWebsite({
     setTrackResult(null);
     try {
       const res = await fetch(
-        `/api/public/applications/track?ref=${encodeURIComponent(
+        apiUrl(`/api/public/applications/track?ref=${encodeURIComponent(
           trackRef.trim()
-        )}&email=${encodeURIComponent(trackEmail.trim())}`
+        )}&email=${encodeURIComponent(trackEmail.trim())}`)
       );
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Application not found.');

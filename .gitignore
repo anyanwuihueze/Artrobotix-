@@ -7,3 +7,9 @@ coverage/
 .env*
 !.env.example
 *.zip
+.vercel
+
+api/index.mjs
+
+# Local Supabase CLI metadata
+supabase/.temp/
