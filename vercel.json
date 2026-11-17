@@ -3,8 +3,8 @@
   "framework": "vite",
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/index?__jg_original_path=:path*"
+      "source": "^/api/(.*)$",
+      "destination": "/api/index?__jg_original_path=$1"
     },
     {
       "source": "/((?!api/).*)",

@@ -1,8 +1,11 @@
 import { build } from 'esbuild';
+import { mkdirSync } from 'node:fs';
+
+mkdirSync('build', { recursive: true });
 
 await build({
   entryPoints: ['server.ts'],
-  outfile: 'api/index.mjs',
+  outfile: 'build/server.mjs',
   bundle: true,
   platform: 'node',
   format: 'esm',

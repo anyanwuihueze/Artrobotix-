@@ -1,5 +1,6 @@
-import app from '../server.ts';
 import type { Request, Response } from 'express';
+
+import app from '../build/server.mjs';
 
 export default function handler(req: Request, res: Response) {
   const requestUrl = new URL(req.url || '/', 'http://localhost');
