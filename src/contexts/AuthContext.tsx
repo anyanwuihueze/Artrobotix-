@@ -130,7 +130,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         recordAuthDiagnostic(
           `FIREBASE AUTHENTICATED: ${result.user.email || result.user.uid}.`
         );
-        await fetchMe(result.user);
+        recordAuthDiagnostic(
+          'Firebase sign-in successful; waiting for authentication listener to synchronize the account.'
+        );
       } else {
         recordAuthDiagnostic('Firebase popup returned without a user.');
         throw new Error('Google sign-in returned no authenticated user.');
